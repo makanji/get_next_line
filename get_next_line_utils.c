@@ -27,3 +27,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	res[total_size] = '\0';
 	return (res);
 }
+
+char	*ft_strchr(const char *str, int char_checked )
+{
+	char *string;
+
+	string = (char *)str;
+	while (string != char_checked && *string != '\0')
+	{
+		string++;
+		if (*string == char_checked)
+			return (string);
+		else
+			return (NULL);
+	}
+	
+
+}
