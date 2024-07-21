@@ -28,19 +28,19 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (res);
 }
 
-char	*ft_strchr(const char *str, int char_checked )
+
+char    *ft_strchr(const char *str, int char_checked )
 {
-	char *string;
+    char *string;
 
-	string = (char *)str;
-	while (string != char_checked && *string != '\0')
-	{
-		string++;
-		if (*string == char_checked)
-			return (string);
-		else
-			return (NULL);
-	}
-	
-
+    string = (char *)str;
+    while (*string != '\0')
+    {
+        if (*string == (char)char_checked)
+            return (string);
+        string++;
+    }
+    if (char_checked == '\0')
+        return (string);
+    return (NULL);
 }
