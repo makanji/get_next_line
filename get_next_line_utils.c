@@ -44,3 +44,17 @@ char    *ft_strchr(const char *str, int char_checked )
         return (string);
     return (NULL);
 }
+
+void	ft_bzero(void *s, size_t n)
+{
+	char *string;
+	size_t i;
+
+	i = 0;
+	string = (char *)s;
+	while (i < n)
+	{
+		string[i] = 0;
+		i++;
+	}
+}
