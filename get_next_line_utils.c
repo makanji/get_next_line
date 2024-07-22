@@ -58,3 +58,13 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void *string;
+	string = malloc(count * size );
+	if (!string)
+		return (NULL);
+	ft_bzero(string, count * size);
+	return (string);
+}
