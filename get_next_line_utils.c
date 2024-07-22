@@ -8,9 +8,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		j;
 
 	i = 0;
+	if (!s1 || !s2)
+		return (NULL);
 	total_size = ft_strlen(s1) + ft_strlen(s2);
 	res = malloc(sizeof(char) * (total_size + 1));
-	if (!res || !s1 || !s2)
+	if (!res)
 		return (NULL);
 	while (s1[i] != '\0')
 	{
@@ -67,4 +69,14 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	ft_bzero(string, count * size);
 	return (string);
+}
+
+size_t	ft_strlen(const char *string)
+{
+	size_t i;
+
+	i = 0;
+	while (string[i] != '\0')
+		i++;
+	return (i);
 }
