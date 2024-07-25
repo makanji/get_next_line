@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makanji <makanji@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/25 15:58:18 by makanji           #+#    #+#             */
+/*   Updated: 2024/07/25 16:00:07 by makanji          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -20,7 +32,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	j = 0;
-	while ( s2[j] != '\0')
+	while (s2[j] != '\0')
 	{
 		res[i] = s2[j];
 		i++;
@@ -30,21 +42,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (res);
 }
 
-
-char    *ft_strchr(const char *str, int char_checked )
+char	*ft_strchr(const char *str, int char_checked )
 {
-    char *string;
+	char	*string;
 
-    string = (char *)str;
-    while (*string != '\0')
-    {
-        if (*string == (char)char_checked)
-            return (string);
-        string++;
-    }
-    if (char_checked == '\0')
-        return (string);
-    return (NULL);
+	string = (char *)str;
+	while (*string != '\0')
+	{
+		if (*string == (char)char_checked)
+			return (string);
+		string++;
+	}
+	if (char_checked == '\0')
+		return (string);
+	return (NULL);
 }
 
 void	ft_bzero(void *s, size_t n)

@@ -1,6 +1,17 @@
-#include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: makanji <makanji@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/25 16:32:55 by makanji           #+#    #+#             */
+/*   Updated: 2024/07/25 16:32:56 by makanji          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define BUFFER_SIZE 1024
+#include "get_next_line.h"
+// #define BUFFER_SIZE 1024
 
 //Function to read from the file decriptor and update the buffer
 char *read_file(int fd, char *buffer )
