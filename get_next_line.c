@@ -1,88 +1,162 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: makanji <makanji@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/25 16:32:55 by makanji           #+#    #+#             */
-/*   Updated: 2024/07/25 16:32:56 by makanji          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
-// #define BUFFER_SIZE 1024
 
-//Function to read from the file decriptor and update the buffer
-char *read_file(int fd, char *buffer )
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 1024
+#endif
+
+// static char *expand_buffer(char *buffer, char *temp)
+// {
+//     char *new_buffer;
+
+//     if (!buffer)
+//         return (ft_strdup(temp));
+//     new_buffer = ft_strjoin(buffer, temp);
+//     free(buffer);
+//     return (new_buffer);
+// }
+
+static char *expand_buffer(char *buffer, char *temp)
 {
-	char temp_buffer[BUFFER_SIZE + 1];
+	char *new_buffer;
+
+	if (!buffer && !temp)
+		return (NULL);
+	if (!buffer)
+		return (ft_strdup(temp));
+	if (!temp)
+		return (buffer);
+	new_buffer = ft_strjoin(buffer, temp);
+	free(buffer);
+	return (new_buffer);
+}
+
+// static char *read_file(int fd, char *buffer)
+// {
+//     char *temp;
+//     ssize_t bytes_read;
+
+//     temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+//     if (!temp)
+//         return (NULL);
+
+//     bytes_read = 1;
+//     while (bytes_read > 0 && !ft_strchr(buffer, '\n'))
+//     {
+//         bytes_read = read(fd, temp, BUFFER_SIZE);
+//         if (bytes_read == -1)
+//         {
+//             free(temp);
+//             return (NULL);
+//         }
+//         temp[bytes_read] = '\0';
+//         buffer = expand_buffer(buffer, temp);
+//         if (!buffer)
+//         {
+//             free(temp);
+//             return (NULL);
+//         }
+//     }
+//     free(temp);
+//     return (buffer);
+// }
+
+static char *read_file(int fd, char *buffer)
+{
+	char *temp;
 	ssize_t bytes_read;
 
-	bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
-	if (bytes_read <= 0)
+	temp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!temp)
 		return (NULL);
-	temp_buffer[bytes_read] = '\0';
-	buffer = ft_strjoin(buffer, temp_buffer);
+
+	bytes_read = 1;
+	while (bytes_read > 0 && (!buffer || !ft_strchr(buffer, '\n')))
+	{
+		bytes_read = read(fd, temp, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(temp);
+			return (NULL);
+		}
+		temp[bytes_read] = '\0';
+		buffer = expand_buffer(buffer, temp);
+		if (!buffer)
+		{
+			free(temp);
+			return (NULL);
+		}
+	}
+	free(temp);
 	return (buffer);
 }
 
-// Function to extract the next line from the buffer
-char *extract_line(char **buffer)
+
+static char *extract_line(char *buffer)
 {
 	char *line;
-	char *new_buffer;
 	int i;
-	int j;
+
+	if (!buffer[0])
+		return (NULL);
 
 	i = 0;
-	j = 0;
-	while ((*buffer)[i] && (*buffer)[i] != '\n')
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (i == 0 && !(*buffer)[i])
-	{
-		free (*buffer);
-		return (NULL);
-	}
+
 	line = ft_calloc(i + 2, sizeof(char));
 	if (!line)
 		return (NULL);
-	while (j < i)
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
 	{
-		line[j] = (*buffer)[j];
-		j ++; 
-	}
-	if ((*buffer)[i] == '\n')
-	{
-		line[i] = '\n';
+		line[i] = buffer[i];
 		i++;
 	}
-	line[i] = '\0';
-	new_buffer = ft_strchr(*buffer, '\n');
-	if (new_buffer)
-	{
-		new_buffer++;
-		free(*buffer);
-		*buffer = ft_strjoin("", new_buffer);
-	}
-	else
-	{
-		free (*buffer);
-		*buffer = NULL;
-	}
+	if (buffer[i] == '\n')
+		line[i] = '\n';
+
 	return (line);
 }
 
-// Main function to get the next line
-char *get_next_line(int fd) 
+static char *update_buffer(char *buffer)
+{
+	char *new_buffer;
+	int i, j;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
+	{
+		free(buffer);
+		return (NULL);
+	}
+	new_buffer = ft_calloc(ft_strlen(buffer) - i + 1, sizeof(char));
+	if (!new_buffer)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buffer[i])
+		new_buffer[j++] = buffer[i++];
+	free(buffer);
+	return (new_buffer);
+}
+
+char *get_next_line(int fd)
 {
 	static char *buffer;
+	char *line;
 
-	buffer = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+
 	buffer = read_file(fd, buffer);
 	if (!buffer)
 		return (NULL);
-	return extract_line (&buffer);
+
+	line = extract_line(buffer);
+	buffer = update_buffer(buffer);
+
+	return (line);
 }
