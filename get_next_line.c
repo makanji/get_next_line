@@ -13,7 +13,7 @@
 // #include "get_next_line.h"
 
 // #ifndef BUFFER_SIZE
-// #define	BUFFER_SIZE 102
+// # define	BUFFER_SIZE 102
 // #endif
 
 // static char	*expand_buffer(char *buffer, char *temp)
